@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	c, err := cpf.NewCPF("529.982.247-25") // cria um novo cpf / creates a new cpf
+	c, err := cpf.NewCPF("05195805407") // cria um novo cpf / creates a new cpf
 	if err != nil {
 		fmt.Println("CPF inválido:", err) // cpf inválido / invalid cpf
 		return

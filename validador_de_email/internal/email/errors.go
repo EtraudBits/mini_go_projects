@@ -22,4 +22,11 @@ var (
 
 5 - Domínio contiver pelo menos um ponto (.)
 
-Não começar nem terminar com @ ou .*/
+Não começar nem terminar com @ ou .
+
+Por que assim?
+Erros são variáveis reutilizáveis
+Nome começa com Err → convenção Go
+Mensagem clara → reduz dúvida de quem usa a função
+
+*/
