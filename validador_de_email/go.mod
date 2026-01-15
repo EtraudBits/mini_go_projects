@@ -1,4 +1,4 @@
-module validador_email
+module validador_de_email
 
 go 1.22.2
 
