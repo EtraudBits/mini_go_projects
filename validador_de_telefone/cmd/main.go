@@ -7,7 +7,7 @@ import (
 
 func main() {
 
-	phoneInput := "(83) 91111-1111" // exemplo de telefone para validar - example of phone to validate
+	phoneInput := "(84) 98765-4321" // exemplo de telefone para validar - example of phone to validate
 
 	err := phone.ValidadorPhone(phoneInput) // chama a função Pública ValidadorPhone do pacote phone e verifica a variavel phoneInput - calls the Public function ValidadorPhone from phone package and checks the variable phoneInput
 
