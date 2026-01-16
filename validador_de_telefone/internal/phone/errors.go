@@ -8,7 +8,7 @@ var (
 	// ErrInvalidDigits indica que o telefone não possui 11 digitos / ErrIvalidDigits indicates that the phone does not have 11 digits
 	ErrInvalidDigits = errors.New("telefone deve conter 11 digitos - Ex: 84987654321 ou (84) 98765-4321")
 	// ErrinvalidDDD indica que o DDD do telefone é invalido / ErrInvalidDDD indicates that the phone DDD is invalid
-	ErrInvalidDDD = errors.New("telefone deve conter DDD valido - Ex: 84, 11, 83")
+	ErrInvalidDDD = errors.New("telefone deve conter DDD valido - Ex: 84, 11, 83 etc")
 	// ErrInvalidStart indica que o telefone não começa com 9 após o DDD / ErrInvalidStart indicates that the phone does not start with 9 ofter the DDD
 	ErrInvalidStart = errors.New("telefone deve começar com 9 após o DDD - Ex: 9xxxxyyyyy")
 )
