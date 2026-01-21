@@ -8,7 +8,6 @@ package client
 
 import (
 	"strings"
-	_ "unicode" // será usado futuramente | will be used in the future
 )
 
 // função principal de normalização | main normalization function
@@ -20,7 +19,7 @@ func Normalize(name, cpf, phone, email string) (Client, []error) { // name, cpf,
 
 	// (&errs) errs é um ponteiro para a lista de erros | (&errs) errs is a pointer to the list of errors
 	normalizedName := normalizeName(name, &errs) 
-	//normalizedCPF := normalizeCPF(cpf, &errs)
+	normalizedCPF := normalizeCPF(cpf, &errs)
 	//normalizedPhone := normalizePhone(phone, &errs)
 	//normalizedEmail := normalizeEmail(email, &errs)
 
@@ -31,7 +30,7 @@ func Normalize(name, cpf, phone, email string) (Client, []error) { // name, cpf,
 	// atribui valores aos campos da struct (NomeDoCampo: valor) | assigns values to struct fields (FieldName: value)
 	client := Client { // cria client com dados normalizados | creates client with normalized data
 		Name: normalizedName,
-		//CPF: normalizedCPF, 
+		CPF: normalizedCPF, 
 		//Phone: normalizedPhone,
 		//Email: normalizedEmail,
 	}
@@ -62,3 +61,14 @@ func normalizeName(value string, errs *[]error) string {
 	}
 		return strings.Join(words, " ") // junta as palavras com espaço entre elas e retorna o nome normalizado (Join junta palavras, o contrario de Fields) | joins the words with space between them and returns the normalized name (Join joins words, the opposite of Fields)
 	}
+
+// 2 - NormalizeCPF (normalização e validação completa do CPF) | 2 - NormalizeCPF (complete CPF normalization and validation)
+// recebe valor cru e ponteiro para lista de erros | receives raw value and pointer to error list
+func normalizeCPF(value string, errs *[]error) string {
+	cpf, err := NewCPF(value) // usa o factory que valida tudo: tamanho, dígitos repetidos e checksum | uses the factory that validates everything: length, repeated digits and checksum
+	if err != nil {
+		*errs = append(*errs, err) // adiciona erro à lista | adds error to the list
+		return "" // retorna string vazia | returns empty string
+	}
+	return cpf // retorna o cpf validado e normalizado | returns the validated and normalized cpf
+}
