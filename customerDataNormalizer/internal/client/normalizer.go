@@ -20,8 +20,8 @@ func Normalize(name, cpf, phone, email string) (Client, []error) { // name, cpf,
 	// (&errs) errs é um ponteiro para a lista de erros | (&errs) errs is a pointer to the list of errors
 	normalizedName := normalizeName(name, &errs) 
 	normalizedCPF := normalizeCPF(cpf, &errs)
-	//normalizedPhone := normalizePhone(phone, &errs)
-	//normalizedEmail := normalizeEmail(email, &errs)
+	normalizedPhone := normalizePhone(phone, &errs)
+	normalizedEmail := normalizeEmail(email, &errs)
 
 	if len(errs) > 0 { // se tamanho da lista de erros for maior que 0 | if size of error list is greater than 0
 		return Client{}, errs // retorna client vazio e lista de erros | returns empty client and list of errors
@@ -31,8 +31,8 @@ func Normalize(name, cpf, phone, email string) (Client, []error) { // name, cpf,
 	client := Client { // cria client com dados normalizados | creates client with normalized data
 		Name: normalizedName,
 		CPF: normalizedCPF, 
-		//Phone: normalizedPhone,
-		//Email: normalizedEmail,
+		Phone: normalizedPhone,
+		Email: normalizedEmail,
 	}
 
 	return client, nil // retorna client normalizado e nil (sem erros) | return normalized client and nil (no errors)
