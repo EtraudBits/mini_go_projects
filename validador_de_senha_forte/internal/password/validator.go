@@ -1,39 +1,40 @@
 package password
 
-import "unicode" // unicode permite identificar letras, núemeros e símbolos corretamente.
+import "unicode"
 
-// validate verifica se a senha atende às regras de segurança.
+// Validate verifica se a senha atende às regras de segurança.
 func Validate(password string) error {
-if len(password) < 8 {
-	return ErrTooShort // Regra 1 - mínimo de 8 caracteres
-}
-var hasUpper, hasLower, hasNumber, hasSpecial bool 
-
-for _, char := range password {
-	switch {
-	case unicode.IsUpper(char):
-		hasUpper = true // Regra 2 - letra maiúscula
-	case unicode.IsLower(char):
-		hasLower = true // Regra 3 - letra minúscula
-	case unicode.IsDigit(char):
-		hasNumber = true // Regra 4 - número
-	case unicode.IsPunct(char) || unicode.IsSymbol(char):
-		hasSpecial = true // Regra 5 - caractere especial
+	if len(password) < 8 {
+		return ErrTooShort
 	}
-} // Verifica se todas as regras foram atendidas
 
-// Retorna erros específicos se alguma regra não for atendida
+	var hasUpper, hasLower, hasNumber, hasSpecial bool
+
+	for _, char := range password {
+		switch {
+		case unicode.IsUpper(char):
+			hasUpper = true
+		case unicode.IsLower(char):
+			hasLower = true
+		case unicode.IsDigit(char):
+			hasNumber = true
+		case unicode.IsPunct(char) || unicode.IsSymbol(char):
+			hasSpecial = true
+		}
+	}
+
 	if !hasUpper {
-		return ErrNoUppercase // Regra 2
+		return ErrNoUppercase
 	}
 	if !hasLower {
-		return ErrNoLowercase // Regra 3
+		return ErrNoLowercase
 	}
 	if !hasNumber {
-		return ErrNoNumber // Regra 4
+		return ErrNoNumber
 	}
 	if !hasSpecial {
-		return ErrNoSpecialChar // Regra 5
+		return ErrNoSpecialChar
 	}
-return nil // Senha válida
+
+	return nil
 }

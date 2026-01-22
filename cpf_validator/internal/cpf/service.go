@@ -1,33 +1,32 @@
 package cpf
 
-// isValidChecksum valida os dois digitos verificadores do CPF / validates the two check digits of the CPF
-// É uma função interna, usada apenas no factory (letra minúscula) / it's an internal function, used only in the factory (lowercase letter)
+// isValidChecksum valida os dois dígitos verificadores do CPF.
 func isValidChecksum(digits []rune) bool {
-	// Calcula o primeiro digito verificador / calculates the first check digit
+	// Calcula o primeiro dígito verificador
 	sum := 0
-	for i := 0; i < 9; i++ { // primeiros 9 digitos / first 9 digits
-		sum += int(digits[i]-'0') * (10 - i) // peso decrescente de 10 a 2 / decreasing weight from 10 to 2
+	for i := 0; i < 9; i++ {
+		sum += int(digits[i]-'0') * (10 - i)
 	}
 
-	first := (sum * 10) % 11 // pega o resto do divisão por 11 / gets the remainder of division by 11
+	first := (sum * 10) % 11
 	if first == 10 {
 		first = 0
 	}
 
-	if first != int(digits[9]-'0') { // compara com o digito verificador / compares with the check digit
-		return false // se não bater, inválido / if it doesn't match, invalid
+	if first != int(digits[9]-'0') {
+		return false
 	}
 
-	// calcula o segundo digito verificador / calculates the second check digit
+	// Calcula o segundo dígito verificador
 	sum = 0
-	for i := 0; i < 10; i++ { // primeiros 10 digitos / first 10 digits
-		sum += int(digits[i]-'0') * (11 - i) // peso decrescente de 11 a 2 / decreasing weight from 11 to 2
+	for i := 0; i < 10; i++ {
+		sum += int(digits[i]-'0') * (11 - i)
 	}
 
-	second := (sum * 10) % 11 // pega o resto do divisão por 11 / gets the remainder of division by 11
+	second := (sum * 10) % 11
 	if second == 10 {
-		second = 0 // se for 10, vira 0 / if it's 10, becomes 0
+		second = 0
 	}
 
-	return second == int(digits[10]-'0') // compara com o digito verificador / compares with the check digit
+	return second == int(digits[10]-'0')
 }
