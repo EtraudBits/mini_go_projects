@@ -37,26 +37,31 @@ O objetivo principal é aprender **como construir sistemas robustos de validaç�
 Este tipo de sistema é **essencial** em diversos contextos profissionais:
 
 ### 🏢 CRM (Customer Relationship Management)
+
 - Normalizar dados de clientes antes de salvar no banco de dados
 - Evitar duplicatas por variações de formatação
 - Garantir qualidade dos dados de contato
 
 ### 🛒 E-commerce
+
 - Validar dados de cadastro no checkout
 - Padronizar informações de entrega
 - Garantir contato válido com cliente
 
 ### 🏦 Sistemas Financeiros
+
 - Validar CPF antes de aprovar transações
 - Garantir dados corretos para compliance
 - Padronizar informações para auditoria
 
 ### 📊 Data Warehouses
+
 - ETL (Extract, Transform, Load) - fase de transformação
 - Limpeza de dados antes de análises
 - Padronização para integração entre sistemas
 
 ### 🔐 Autenticação e Cadastro
+
 - Validar dados no registro de usuários
 - Normalizar emails para evitar duplicatas
 - Verificar documentos antes de criar contas
@@ -70,6 +75,7 @@ Este tipo de sistema é **essencial** em diversos contextos profissionais:
 #### Por que usar tipos nomeados?
 
 **❌ Problema sem tipos nomeados:**
+
 ```go
 func ProcessPayment(cpf string, email string) {
     // É possível passar email onde espera CPF!
@@ -78,6 +84,7 @@ func ProcessPayment(cpf string, email string) {
 ```
 
 **✅ Solução com tipos nomeados:**
+
 ```go
 func ProcessPayment(cpf CPF, email Email) {
     // Compilador impede erros de tipo!
@@ -86,12 +93,14 @@ func ProcessPayment(cpf CPF, email Email) {
 ```
 
 **Benefícios:**
+
 - 🔒 **Segurança** - Compilador previne erros
 - 📖 **Documentação automática** - Código auto-explicativo
 - 🎯 **Clareza** - Função deixa claro o que espera
 - 🛡️ **Prevenção de bugs** - Erros detectados antes de rodar
 
 **Implementação:**
+
 ```go
 // types.go - Apenas definições
 type CPF string
@@ -109,11 +118,13 @@ type Phone string
 O Factory garante que **apenas dados válidos possam existir no sistema**.
 
 **❌ Sem Factory:**
+
 ```go
 var cpf CPF = "123" // CPF inválido criado sem validação!
 ```
 
 **✅ Com Factory:**
+
 ```go
 cpf, err := NewCPF("123") // ERRO retornado, CPF inválido não é criado
 if err != nil {
@@ -123,6 +134,7 @@ if err != nil {
 ```
 
 **Estrutura do Factory:**
+
 ```go
 // factoryCPF.go
 func NewCPF(value string) (CPF, error) {
@@ -130,7 +142,7 @@ func NewCPF(value string) (CPF, error) {
     // 2. Valida tamanho (11 dígitos)
     // 3. Rejeita dígitos repetidos (111.111.111-11)
     // 4. Valida checksum (dígitos verificadores)
-    
+
     if /* inválido */ {
         return "", ErrCPFinvalid
     }
@@ -139,6 +151,7 @@ func NewCPF(value string) (CPF, error) {
 ```
 
 **Benefícios:**
+
 - ✅ **Garantia de validade** - Impossível criar dado inválido
 - ✅ **Ponto único de validação** - Lógica centralizada
 - ✅ **Facilita testes** - Testar factory = testar todo o sistema
@@ -164,12 +177,12 @@ internal/client/
 
 **Por que essa estrutura?**
 
-| Arquivo | Responsabilidade | Mudança Isolada |
-|---------|-----------------|-----------------|
-| `types.go` | Definir tipos | Adicionar novo tipo |
-| `factory*.go` | Validar regras de negócio | Mudar regra de validação |
-| `normalizer.go` | Coordenar processo | Mudar fluxo de normalização |
-| `model.go` | Estrutura de dados | Adicionar/remover campo |
+| Arquivo         | Responsabilidade          | Mudança Isolada             |
+| --------------- | ------------------------- | --------------------------- |
+| `types.go`      | Definir tipos             | Adicionar novo tipo         |
+| `factory*.go`   | Validar regras de negócio | Mudar regra de validação    |
+| `normalizer.go` | Coordenar processo        | Mudar fluxo de normalização |
+| `model.go`      | Estrutura de dados        | Adicionar/remover campo     |
 
 **Benefício:** Mudanças são **localizadas** e não afetam outras partes!
 
@@ -184,6 +197,7 @@ O CPF brasileiro usa **2 dígitos verificadores** calculados por um algoritmo es
 **Exemplo: CPF 123.456.789-09**
 
 **Primeiro dígito (0):**
+
 ```
 Posição:  1   2   3   4   5   6   7   8   9
 Dígito:   1   2   3   4   5   6   7   8   9
@@ -194,6 +208,7 @@ Resultado: 0 ✓
 ```
 
 **Segundo dígito (9):**
+
 ```
 Posição:  1   2   3   4   5   6   7   8   9   10
 Dígito:   1   2   3   4   5   6   7   8   9   0
@@ -204,6 +219,7 @@ Resultado: 9 ✓
 ```
 
 **Por que isso importa:**
+
 - 🛡️ **Detecta erros de digitação** - 99% de eficácia
 - 🔒 **Previne fraudes** - Não aceita CPFs inventados
 - ✅ **Padrão oficial** - Segue Receita Federal
@@ -215,6 +231,7 @@ Resultado: 9 ✓
 #### Padrão idiomático em Go
 
 **❌ Forma tradicional (repetitiva):**
+
 ```go
 func TestCPFValid(t *testing.T) { /* ... */ }
 func TestCPFEmpty(t *testing.T) { /* ... */ }
@@ -223,6 +240,7 @@ func TestCPFInvalidChecksum(t *testing.T) { /* ... */ }
 ```
 
 **✅ Forma com Table-Driven:**
+
 ```go
 tests := []struct {
     name     string
@@ -244,12 +262,14 @@ for _, tt := range tests {
 ```
 
 **Benefícios:**
+
 - 📊 **Organização** - Dados separados da lógica
 - ⚡ **Eficiência** - Fácil adicionar novos casos
 - 🎯 **Clareza** - Nome descritivo para cada teste
 - 🔄 **Reutilização** - Mesma lógica para todos
 
 **Cobertura do Projeto:**
+
 - ✅ 6 casos para `Normalize()`
 - ✅ 5 casos para normalização de nome
 - ✅ 16 casos para CPF (4 válidos + 12 inválidos)
@@ -264,16 +284,19 @@ for _, tt := range tests {
 #### Diferença conceitual importante
 
 **Validação:**
+
 - ✅ Verifica se dado está **correto**
 - ❌ Retorna erro se inválido
 - 🔍 Exemplo: CPF tem 11 dígitos?
 
 **Normalização:**
+
 - 🔧 **Transforma** dado para formato padrão
 - ✨ Remove variações de formatação
 - 📝 Exemplo: "JOÃO silva" → "João Silva"
 
 **No projeto:**
+
 ```go
 // Validação + Normalização juntas
 func NewEmail(value string) (Email, error) {
@@ -291,12 +314,12 @@ func NewEmail(value string) (Email, error) {
 
 ### Pacotes Go Utilizados
 
-| Pacote | Uso | Por que |
-|--------|-----|---------|
-| `strings` | Manipulação de strings | Trim, ToLower, Repeat, etc. |
-| `unicode` | Validação de caracteres | Verificar se é dígito |
-| `fmt` | Formatação | Criar mensagens de teste |
-| `testing` | Framework de testes | Testes nativos do Go |
+| Pacote    | Uso                     | Por que                     |
+| --------- | ----------------------- | --------------------------- |
+| `strings` | Manipulação de strings  | Trim, ToLower, Repeat, etc. |
+| `unicode` | Validação de caracteres | Verificar se é dígito       |
+| `fmt`     | Formatação              | Criar mensagens de teste    |
+| `testing` | Framework de testes     | Testes nativos do Go        |
 
 ### Conceitos de Programação
 
@@ -348,6 +371,7 @@ go run cmd/main.go
 ```
 
 **Saída esperada:**
+
 ```
 === Customer Data Normalizer ===
 
@@ -421,13 +445,13 @@ func main() {
 
 ## 💡 Principais Lições Aprendidas
 
-| Conceito | Lição | Aplicação |
-|----------|-------|-----------|
-| **Type Safety** | Tipos previnem erros em tempo de compilação | Impossível confundir CPF com Email |
+| Conceito            | Lição                                            | Aplicação                              |
+| ------------------- | ------------------------------------------------ | -------------------------------------- |
+| **Type Safety**     | Tipos previnem erros em tempo de compilação      | Impossível confundir CPF com Email     |
 | **Factory Pattern** | Garante validade dos dados no momento da criação | Apenas dados válidos entram no sistema |
-| **Separação** | Cada arquivo tem uma responsabilidade única | Manutenção facilitada |
-| **Testes** | Table-driven tests são eficientes e escaláveis | 59 testes com pouco código |
-| **Normalização** | Dados padronizados facilitam comparações | Evita duplicatas no banco |
+| **Separação**       | Cada arquivo tem uma responsabilidade única      | Manutenção facilitada                  |
+| **Testes**          | Table-driven tests são eficientes e escaláveis   | 59 testes com pouco código             |
+| **Normalização**    | Dados padronizados facilitam comparações         | Evita duplicatas no banco              |
 
 ---
 
@@ -457,26 +481,31 @@ The main goal is to learn **how to build robust data validation systems**, apply
 This type of system is **essential** in various professional contexts:
 
 ### 🏢 CRM (Customer Relationship Management)
+
 - Normalize customer data before saving to database
 - Avoid duplicates due to formatting variations
 - Ensure contact data quality
 
 ### 🛒 E-commerce
+
 - Validate registration data at checkout
 - Standardize delivery information
 - Ensure valid customer contact
 
 ### 🏦 Financial Systems
+
 - Validate CPF before approving transactions
 - Ensure correct data for compliance
 - Standardize information for auditing
 
 ### 📊 Data Warehouses
+
 - ETL (Extract, Transform, Load) - transformation phase
 - Data cleaning before analysis
 - Standardization for system integration
 
 ### 🔐 Authentication and Registration
+
 - Validate data during user registration
 - Normalize emails to avoid duplicates
 - Verify documents before creating accounts
@@ -488,6 +517,7 @@ This type of system is **essential** in various professional contexts:
 ### 1. **Named Types for Type Safety**
 
 **❌ Problem without named types:**
+
 ```go
 func ProcessPayment(cpf string, email string) {
     // Can pass email where CPF is expected!
@@ -496,6 +526,7 @@ func ProcessPayment(cpf string, email string) {
 ```
 
 **✅ Solution with named types:**
+
 ```go
 func ProcessPayment(cpf CPF, email Email) {
     // Compiler prevents type errors!
@@ -524,6 +555,7 @@ Brazilian CPF uses **2 check digits** calculated by a specific algorithm, detect
 Idiomatic pattern in Go for efficient and scalable testing.
 
 **Coverage:**
+
 - 59 tests covering all validation scenarios
 - 100% code coverage
 - Valid and invalid cases for all fields
