@@ -2,40 +2,6 @@ package client
 
 import "unicode"
 
-// NewCPF cria um novo cpf valido / NewCPF creates a new valid cpf
-// Se algo estiver errado, falha imediatamente / if something is wrong, it fails immediately
-func NewCPF(value string) (string, error) {
-
-	var digits []rune // apenas digitos / only digits
-	for _, r := range value {
-		if unicode.IsDigit(r) { // se for digito / if it's a digit
-			digits = append(digits, r) // add ao slice / add to slice
-		}
-	}
-	if len(digits) != 11 {
-		return "", ErrCPFinvalid
-	}
-
-	// Verifica se todos os digitos são iguais / checks if all digits are the same
-	allEqual := true
-	for i := 1; i < 11; i++ {
-		if digits[i] != digits[0] { // se algum for diferente / if any is different
-			allEqual = false
-			break
-		}
-	}
-	if allEqual {
-		return "", ErrCPFinvalid
-	}
-
-	// Valida os digitos verificadores / validates the check digits
-	if !isValidChecksum(digits) {
-		return "", ErrCPFinvalid
-	}
-
-	return string(digits), nil
-}
-
 // isValidChecksum valida os dois digitos verificadores do CPF / validates the two check digits of the CPF
 // É uma função interna, usada apenas no factory (letra minúscula) / it's an internal function, used only in the factory (lowercase letter)
 func isValidChecksum(digits []rune) bool {
@@ -67,3 +33,39 @@ func isValidChecksum(digits []rune) bool {
 
 	return second == int(digits[10]-'0') // compara com o digito verificador / compares with the check digit
 }
+
+// NewCPF cria um novo CPF válido e retorna o tipo CPF | NewCPF creates a new valid CPF and returns the CPF type
+// Se algo estiver errado, falha imediatamente | if something is wrong, it fails immediately
+// Garante type safety: só é possível criar um CPF se for válido | Ensures type safety: only possible to create a CPF if it's valid
+func NewCPF(value string) (CPF, error) {
+
+	var digits []rune // apenas digitos / only digits
+	for _, r := range value {
+		if unicode.IsDigit(r) { // se for digito / if it's a digit
+			digits = append(digits, r) // add ao slice / add to slice
+		}
+	}
+	if len(digits) != 11 {
+		return "", ErrCPFinvalid
+	}
+
+	// Verifica se todos os digitos são iguais / checks if all digits are the same
+	allEqual := true
+	for i := 1; i < 11; i++ {
+		if digits[i] != digits[0] { // se algum for diferente / if any is different
+			allEqual = false
+			break
+		}
+	}
+	if allEqual {
+		return "", ErrCPFinvalid
+	}
+
+	// Valida os digitos verificadores / validates the check digits
+	if !isValidChecksum(digits) {
+		return "", ErrCPFinvalid
+	}
+
+	return CPF(string(digits)), nil
+}
+
