@@ -2,7 +2,6 @@ package client
 
 // Tipos nomeados para documentação automática e type safety | Named types for automatic documentation and type safety
 // Use os factories para criar instâncias válidas | Use factories to create valid instances
-// Métodos de apresentação estão em methods.go | Presentation methods are in methods.go
 
 // CPF representa um CPF válido e normalizado (apenas dígitos) | CPF represents a valid and normalized CPF (digits only)
 // Garante que apenas CPFs válidos existam no sistema | Ensures only valid CPFs exist in the system
