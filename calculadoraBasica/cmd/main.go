@@ -1,7 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 func main() {
-  fmt.Println("Calculadora Basica em Go")
-  }
+	if err := Run(); err != nil {
+		fmt.Fprintf(os.Stderr, "Erro ao ler entrada: %v\n", err)
+		os.Exit(1)
+	}
+}
