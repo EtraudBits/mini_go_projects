@@ -17,6 +17,7 @@ func cadastrarProduto(nome string, quantidade int) Produto {
 	}
 }
 // Função para adicionar um produto ao estoque
+// Usamos um ponteiro para modificar o slice original
 func adicionarEstoque(estoque *[]Produto, produto Produto) {
 	*estoque  = append(*estoque, produto)
 	
@@ -36,7 +37,8 @@ func main() {
 		coluna := cadastrarProduto("coluna", 10)
 		estacaTipoMourao := cadastrarProduto("estaca tipo mourao", 100)
 		estacaCurvada := cadastrarProduto("estaca curvada", 15)
-
+		
+		// Adicionando produtos ao estoque chamando a função e passando o endereço do slice
 		adicionarEstoque(&estoque, viga)
 		adicionarEstoque(&estoque, coluna)
 		adicionarEstoque(&estoque, estacaTipoMourao)
