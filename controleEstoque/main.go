@@ -2,25 +2,26 @@ package main
 
 import "fmt"
 
+// Definição da estrutura do produto
 type Produto struct {
 
 	Nome string
 	Quantidade int
 
 }
-
+// Função para cadastrar um novo produto
 func cadastrarProduto(nome string, quantidade int) Produto {
 	return Produto{
 		Nome: nome,
 		Quantidade: quantidade, 
 	}
 }
-
-func adicionarEstoque(estoque []Produto, produto Produto) []Produto {
-	estoque  = append(estoque, produto)
-	return estoque
+// Função para adicionar um produto ao estoque
+func adicionarEstoque(estoque *[]Produto, produto Produto) {
+	*estoque  = append(*estoque, produto)
+	
 }
-
+// Função para listar todos os produtos no estoque	
 func listarEstoque(estoque []Produto) {
 	for _, produto := range estoque {
 		fmt.Printf("Produto: %s | Quantidade: %d\n", produto.Nome, produto.Quantidade)
@@ -36,10 +37,10 @@ func main() {
 		estacaTipoMourao := cadastrarProduto("estaca tipo mourao", 100)
 		estacaCurvada := cadastrarProduto("estaca curvada", 15)
 
-		estoque = adicionarEstoque(estoque, viga)
-		estoque = adicionarEstoque(estoque, coluna)
-		estoque = adicionarEstoque(estoque, estacaTipoMourao)
-		estoque = adicionarEstoque(estoque, estacaCurvada)
+		adicionarEstoque(&estoque, viga)
+		adicionarEstoque(&estoque, coluna)
+		adicionarEstoque(&estoque, estacaTipoMourao)
+		adicionarEstoque(&estoque, estacaCurvada)
 		listarEstoque(estoque)
 
 }
