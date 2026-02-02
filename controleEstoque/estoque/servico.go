@@ -1,0 +1,25 @@
+package estoque
+
+// ServicoEstoque chama a interface RepositorioEstoque para gerenciar produtos no estoque
+type ServicoEstoque struct {
+	repositorio RepositorioEstoque // campo que armazena o repositório de estoque que esta implementa a interface RepositorioEstoque
+}
+
+
+// NovoServicoEstoque cria um novo serviço de estoque com o repositório fornecido
+func NovoServicoEstoque(repo RepositorioEstoque) *ServicoEstoque {
+	return &ServicoEstoque { // retorna um ponteiro para ServicoEstoque
+		repositorio: repo, // repo significa o repositório passado como argumento que é atribuído ao campo repositorio
+	}
+}
+
+// CadastrarProduto adiciona um novo produto ao estoque usando o repositório substituindo o método Adicionar da interface
+func (s *ServicoEstoque) CadastrarProduto(produto Produto) {
+	s.repositorio.Adicionar(produto) // chama o método Adicionar do repositório para adicionar o produto que esta no arquivo main.go
+}
+
+// ListarProdutos retorna a lista de produtos no estoque usando o repositório substituindo o método Listar da interface
+func (s *ServicoEstoque) ListarProdutos() []Produto { 
+	return s.repositorio.Listar() // chama o método Listar do repositório para listar os produtos que estão no estoque que estar no aruivo main.go
+}
+

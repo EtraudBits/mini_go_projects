@@ -4,12 +4,14 @@ import (
 	"controleEstoque/estoque"
 )
 
-
 // Função principal do programa
 func main() {
 
-	estoqueLoja := estoque.NovoEstoque() // Cria um novo estoque usando a função do pacote estoque
+	repo := estoque.NovoEstoqueMemoria() // cria um novo repositório de estoque em memória chamando a função NovoEstoqueMemoria do pacote memoria.go
 
+	servico := estoque.NovoServicoEstoque(repo) // cria um novo serviço de estoque chamando a função NovoServicoEstoque do pacote servico.go e passando o repositório criado acima
+		
+	
 		viga := estoque.Produto { // cria um novo produto no pacote estoque no tipo Produto
 			Nome: "viga",
 			Quantidade: 11,
@@ -32,13 +34,19 @@ func main() {
 		coluna.DiminiurQuantidade(2) // Diminui a quantidade da coluna em 2
 
 		// Adicionando os produtos ao estoque
-		estoqueLoja.Adicionar(viga)
-		estoqueLoja.Adicionar(coluna)
-		estoqueLoja.Adicionar(estacaTipoMourao)
-		estoqueLoja.Adicionar(estacaCurvada)
+		servico.CadastrarProduto(viga) // Chama o método CadastrarProduto do serviço para adicionar o produto viga
+		servico.CadastrarProduto(coluna)
+		servico.CadastrarProduto(estacaTipoMourao)
+		servico.CadastrarProduto(estacaCurvada)
+
 
 	// Listando os produtos no estoque
-	estoqueLoja.Listar() // Chama o método Listar para exibir os produtos no estoque
+	produtos := servico.ListarProdutos() // Chama o método ListarProdutos do serviço para obter a lista de produtos
+
+	// Imprimindo os produtos no estoque
+	for _, produto := range produtos {
+		println("Produto:", produto.Nome, "Quantidade:", produto.Quantidade)
+	}
 
 }
 
