@@ -263,6 +263,24 @@ func TestCadastrarProduto(t *testing.T) {
 
 Este projeto serve como documentação viva do processo de aprendizado em Go. Cada commit representa um passo na jornada de compreensão da linguagem, desde conceitos básicos até padrões mais avançados de desenvolvimento.
 
+**Principais Lições da Versão 1.0:**
+
+- **Structs são a base da programação em Go**: Permitem agrupar dados relacionados
+- **Métodos com receivers conectam funções a tipos**: Sintaxe `func (p *Produto) Metodo()`
+- **Ponteiros são essenciais para modificar estado**: `*Produto` permite alterar o produto original
+- **Slices são arrays dinâmicos**: Crescem conforme necessário com `append()`
+- **Validação de dados é importante**: Sempre verificar valores antes de operações (ex: não permitir quantidade negativa)
+- **Funções auxiliares organizam o código**: `cadastrarProduto()` separa responsabilidades
+
+**Principais Lições da Versão 2.0:**
+
+- **Pacotes organizam código em módulos**: Separar lógica em arquivos diferentes facilita manutenção
+- **Exportação com letra maiúscula**: `Produto` é exportado, `produto` seria privado ao pacote
+- **Factory functions são o padrão Go**: `NovoEstoque()` substitui construtores de outras linguagens
+- **Separação de responsabilidades melhora código**: `produto.go` cuida de produtos, `estoque.go` cuida do estoque
+- **`go.mod` gerencia dependências**: Define o módulo e suas dependências externas
+- **Importação de pacotes locais**: Usar o caminho do módulo (ex: `controleEstoque/estoque`)
+
 **Principais Lições da Versão 3.0:**
 
 - **Interfaces são contratos**: Definem o que precisa ser feito, não como fazer
@@ -282,7 +300,7 @@ Este projeto serve como documentação viva do processo de aprendizado em Go. Ca
 - **Testes são documentação executável**: Mostram como o código deve ser usado e o comportamento esperado
 - **Nomenclatura de testes**: Funções de teste devem começar com `Test` seguido do nome descritivo
 - **`t.Errorf()` fornece feedback claro**: Mensagens descritivas ajudam a identificar falhas rapidamente
-- \*\*Cada teste dev4.0 - Testes Unitários e Qualidade de Códigooutros testes ou ordem de execução
+- **Cada teste deve ser independente**: Não deve depender de outros testes ou ordem de execução
 - **Comentários nos testes auxiliam compreensão**: Especialmente útil para aprendizado, indicando origem de tipos e funções
 
 ---
@@ -294,4 +312,4 @@ Este é um projeto educacional de código aberto para fins de aprendizado.
 ---
 
 **Última atualização:** Fevereiro 2026  
-**Versão atual:** 3.0 - Arquitetura em Camadas com Interfaces
+**Versão atual:** 4.0 - Testes Unitários e Qualidade de Código
