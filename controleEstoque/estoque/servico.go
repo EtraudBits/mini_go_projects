@@ -18,8 +18,8 @@ func (s *ServicoEstoque) CadastrarProduto(produto Produto) {
 	s.repositorio.Adicionar(produto) // chama o método Adicionar do repositório para adicionar o produto que esta no arquivo main.go
 }
 
-// ListarProdutos retorna a lista de produtos no estoque usando o repositório substituindo o método Listar da interface
-func (s *ServicoEstoque) ListarProdutos() []Produto { 
+// ListarEstoque retorna a lista de produtos no estoque usando o repositório substituindo o método Listar da interface
+func (s *ServicoEstoque) ListarEstoque() []Produto { 
 	return s.repositorio.Listar() // chama o método Listar do repositório para listar os produtos que estão no estoque que estar no aruivo main.go
 }
 
