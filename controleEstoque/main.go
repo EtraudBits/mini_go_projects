@@ -41,7 +41,7 @@ func main() {
 
 
 	// Listando os produtos no estoque
-	produtos := servico.ListarProdutos() // Chama o método ListarProdutos do serviço para obter a lista de produtos
+	produtos := servico.ListarEstoque() // Chama o método ListarProdutos do serviço para obter a lista de produtos
 
 	// Imprimindo os produtos no estoque
 	for _, produto := range produtos {
