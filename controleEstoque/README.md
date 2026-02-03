@@ -27,6 +27,8 @@ Este é um projeto educacional desenvolvido para aprender e praticar conceitos f
 - ✅ **Padrões de projeto (Repository, Service Layer)**
 - ✅ **Dependency Injection**
 - ✅ **Princípios SOLID**
+- ✅ **Testes Unitários**
+- ✅ **Mocking e Test Doubles**
 
 ---
 
@@ -40,7 +42,8 @@ controleEstoque/
 │   ├── produto.go        # Estrutura e métodos de Produto
 │   ├── interface.go      # Interface RepositorioEstoque (contrato)
 │   ├── memoria.go        # Implementação em memória do repositório
-│   └── servico.go        # Camada de serviço (lógica de negócio)
+│   ├── servico.go        # Camada de serviço (lógica de negócio)
+│   └── servico_test.go   # Testes unitários do serviço
 └── README.md            # Este arquivo
 ```
 
@@ -86,11 +89,30 @@ controleEstoque/
 - ✅ **Camada de Serviço** (`ServicoEstoque`):
   - Separa lógica de negócio da camada de dados
   - Usa a interface `RepositorioEstoque` (inversão de dependência)
-  - Métodos `CadastrarProduto()` e `ListarProdutos()`
+  - Métodos `CadastrarProduto()` e `ListarEstoque()`
 - ✅ **Refatoração completa da arquitetura**:
   - Remoção de código redundante (`estoque.go`)
   - Aplicação de princípios SOLID
   - Código mais testável e manutenível
+
+### **Versão 4.0 - Testes Unitários e Qualidade de Código**
+
+- ✅ Implementação de **Testes Unitários** (`servico_test.go`):
+  - Testes para `CadastrarProduto()`
+  - Testes para `ListarEstoque()`
+  - Uso do pacote `testing` do Go
+- ✅ **Mock Objects** para testes isolados:
+  - Criação de `mockRepositorioEstoque`
+  - Implementação dos métodos da interface para testes
+  - Testes sem dependência de implementações reais
+- ✅ **Documentação detalhada do código de teste**:
+  - Comentários explicando origem de cada função/tipo
+  - Referências aos arquivos fonte
+  - Facilita compreensão do fluxo de testes
+- ✅ **Validação de comportamento**:
+  - Verificação de quantidade de produtos cadastrados
+  - Validação de listagem de estoque
+  - Uso de `t.Errorf()` para mensagens de erro descritivas
 
 ---
 
@@ -108,6 +130,19 @@ cd controleEstoque
 
 # Execute o programa
 go run main.go
+```
+
+### Executando os testes
+
+```bash
+# Execute todos os testes do pacote estoque
+go test ./estoque
+
+# Execute com saída detalhada (verbose)
+go test -v ./estoque
+
+# Execute um teste específico
+go test -v ./estoque -run TestCadastrarProduto
 ```
 
 ### Exemplo de Saída
@@ -192,6 +227,36 @@ func (e *EstoqueMemoria) Adicionar(produto Produto) {
 - Inversão de dependência (depende de interface, não de implementação)
 - Mais flexível e testável
 
+### **Testes Unitários**
+
+```go
+func TestCadastrarProduto(t *testing.T) {
+    mockRepo := &mockRepositorioEstoque{}
+    servico := NovoServicoEstoque(mockRepo)
+
+    produto := Produto{Nome: "viga", Quantidade: 12}
+    servico.CadastrarProduto(produto)
+
+    if len(mockRepo.produtos) != 1 {
+        t.Errorf("Esperava 1 produto, mas encontrei %d", len(mockRepo.produtos))
+    }
+}
+```
+
+**Benefícios dos Testes:**
+
+- Validam o comportamento esperado do código
+- Detectam regressões e bugs rapidamente
+- Servem como documentação viva do sistema
+- Facilitam refatorações com segurança
+
+**Mock Objects:**
+
+- Simulam implementações reais para testes isolados
+- Não dependem de banco de dados ou recursos externos
+- Testam apenas a lógica do serviço
+- Permitem controle total sobre o comportamento do repositório
+
 ---
 
 ## 📚 Aprendizados e Notas
@@ -207,6 +272,18 @@ Este projeto serve como documentação viva do processo de aprendizado em Go. Ca
 - **Service Layer centraliza regras de negócio**: Mantém a lógica separada da camada de dados
 - **Dependency Injection através de construtores**: Aumenta flexibilidade e testabilidade
 - **Refatoração é importante**: Remover código redundante mantém o projeto limpo e manutenível
+
+**Principais Lições da Versão 4.0:**
+
+- **Testes unitários são essenciais**: Garantem que o código funciona conforme esperado
+- **Mocks isolam testes**: Testam apenas a unidade de código desejada sem dependências externas
+- **Pacote `testing` do Go é simples e poderoso**: Não requer frameworks externos para testes básicos
+- **Interfaces facilitam mocking**: Criar um mock é apenas implementar os métodos da interface
+- **Testes são documentação executável**: Mostram como o código deve ser usado e o comportamento esperado
+- **Nomenclatura de testes**: Funções de teste devem começar com `Test` seguido do nome descritivo
+- **`t.Errorf()` fornece feedback claro**: Mensagens descritivas ajudam a identificar falhas rapidamente
+- \*\*Cada teste dev4.0 - Testes Unitários e Qualidade de Códigooutros testes ou ordem de execução
+- **Comentários nos testes auxiliam compreensão**: Especialmente útil para aprendizado, indicando origem de tipos e funções
 
 ---
 
