@@ -61,3 +61,18 @@ func TestListarEstoque(t *testing.T) { // t *testing.T vem do pacote padrão "te
 		t.Errorf("Esperava 2 produtos na lista, mas encontrei %d", len(produtos),) // t.Errorf vem do pacote padrão "testing"
 	}
 }
+
+func TestVenderProdutoComEstoqueInsuficiente(t *testing.T) {
+	mockRepo := &mockRepositorioEstoque{}
+	servico := NovoServicoEstoque(mockRepo)
+
+	mockRepo.Adicionar(Produto{Nome: "areia", Quantidade: 5})
+
+	err := servico.VenderProduto("areia", 10) // VenderProduto vem do arquivo servico.go
+
+	if err != nil {
+		t.Errorf("Esperava erro de estoque insuficiente, mas não recebi erro")
+	}
+}
+
+
