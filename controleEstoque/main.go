@@ -31,7 +31,7 @@ func main() {
 
 		//
 		viga.AumentarQuantidade(6) // Aumenta a quantidade da viga em 6
-		coluna.DiminiurQuantidade(2) // Diminui a quantidade da coluna em 2
+		coluna.DiminuirQuantidade(2) // Diminui a quantidade da coluna em 2
 
 		// Adicionando os produtos ao estoque
 		servico.CadastrarProduto(viga) // Chama o método CadastrarProduto do serviço para adicionar o produto viga
