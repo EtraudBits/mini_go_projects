@@ -1,5 +1,9 @@
 package estoque
 
+import (
+	"errors"
+)
+
 // ServicoEstoque chama a interface RepositorioEstoque para gerenciar produtos no estoque
 type ServicoEstoque struct {
 	repositorio RepositorioEstoque // campo que armazena o repositório de estoque que esta implementa a interface RepositorioEstoque
@@ -23,3 +27,15 @@ func (s *ServicoEstoque) ListarEstoque() []Produto {
 	return s.repositorio.Listar() // chama o método Listar do repositório para listar os produtos que estão no estoque que estar no aruivo main.go
 }
 
+// VenderProduto diminui a quantidade de um produto no estoque
+func (s *ServicoEstoque) VenderProduto(nome string, quantidade int) error {
+	produtos := s.repositorio.Listar() // obtém a lista de produtos do repositório
+
+	for i := range produtos {  // faz um loop pelos os produtos
+		if produtos[i].Nome == nome { // se o nome do produto for igual ao nome passado como argumento
+			return produtos[i].DiminuirQuantidade(quantidade) // retorna o resultado da chamada do método DiminuirQuantidade do produto, onde podutos[i] significa o produto encontrado no estoque .DiminuirQuantidade(quantidade) vem do arquivo produto.go
+		}
+	}
+
+	return errors.New("produto não encontrado") // retorna um erro se o produto não for encontrado
+}
