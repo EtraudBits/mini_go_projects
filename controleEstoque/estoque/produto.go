@@ -1,8 +1,15 @@
 package estoque
 
 import (
+	"errors"
 	"fmt"
 )
+
+// Erro para indicar que o estoque é insuficiente
+var ErrEstoqueInsuficiente = errors.New("estoque insuficiente")
+
+// Erro para indicar que o valor fornecido é inválido
+var ErrValorInvalido = errors.New("valor inválido")
 
 type Produto struct {
 
@@ -17,10 +24,18 @@ func (p *Produto) AumentarQuantidade(valor int) {
 }
 
 // Método para diminuir a quantidade do produto
-func (p *Produto) DiminiurQuantidade(valor int) {
-	if p.Quantidade >= valor { // Verifica se há quantidade suficiente
-		p.Quantidade -= valor // Diminui a quantidade
+func (p *Produto) DiminuirQuantidade(valor int) error {
+	if valor <= 0 { // valida se o valor é positivo
+		return ErrValorInvalido // retorna erro se o valor for inválido
 	}
+	// verifica se há estoque suficiente (regra de negócio)
+	if p.Quantidade < valor {
+		return ErrEstoqueInsuficiente // retorna erro se o estoque for insuficiente
+	}
+
+	// serve para diminuir a quantidade do produto - altera segura do estado do objeto
+	p.Quantidade -= valor // diminui a quantidade do produto
+	return nil // se não houver erro, retorna nil
 }
 
 func (p *Produto) Exibir() {
