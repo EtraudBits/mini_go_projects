@@ -29,6 +29,8 @@ Este é um projeto educacional desenvolvido para aprender e praticar conceitos f
 - ✅ **Princípios SOLID**
 - ✅ **Testes Unitários**
 - ✅ **Mocking e Test Doubles**
+- ✅ **Tratamento de Erros**
+- ✅ **Validação de Regras de Negócio**
 
 ---
 
@@ -113,6 +115,31 @@ controleEstoque/
   - Verificação de quantidade de produtos cadastrados
   - Validação de listagem de estoque
   - Uso de `t.Errorf()` para mensagens de erro descritivas
+
+### **Versão 5.0 - Tratamento de Erros e Validação de Negócio**
+
+- ✅ **Sistema de Erros Customizados**:
+  - `ErrEstoqueInsuficiente` - Erro quando há tentativa de venda sem estoque
+  - `ErrValorInvalido` - Erro para valores inválidos (negativos ou zero)
+  - Uso de `errors.New()` para criação de erros semânticos
+- ✅ **Refatoração do método `DiminuirQuantidade()`**:
+  - Retorna `error` em vez de silenciosamente falhar
+  - Valida se o valor é positivo antes de processar
+  - Verifica disponibilidade de estoque antes da operação
+  - Permite tratamento adequado de erros no código cliente
+- ✅ **Implementação do método `VenderProduto()`**:
+  - Busca produto por nome no repositório
+  - Utiliza validação do método `DiminuirQuantidade()`
+  - Retorna erro específico se produto não for encontrado
+  - Propaga erros de estoque insuficiente adequadamente
+- ✅ **Testes de Validação**:
+  - `TestVenderProdutoComEstoqueInsuficiente()` verifica tratamento de erro
+  - Garante que regras de negócio são respeitadas
+  - Valida comportamento em cenários de erro
+- ✅ **Correções e Melhorias**:
+  - Corrigido typo: `DiminiurQuantidade` → `DiminuirQuantidade`
+  - Código mais robusto e previsível
+  - Melhor experiência para quem usa a API
 
 ---
 
@@ -303,6 +330,19 @@ Este projeto serve como documentação viva do processo de aprendizado em Go. Ca
 - **Cada teste deve ser independente**: Não deve depender de outros testes ou ordem de execução
 - **Comentários nos testes auxiliam compreensão**: Especialmente útil para aprendizado, indicando origem de tipos e funções
 
+**Principais Lições da Versão 5.0:**
+
+- **Erros são valores em Go**: Não há exceções, erros são retornados como valores
+- **Erros customizados melhoram semântica**: `ErrEstoqueInsuficiente` é mais descritivo que uma string genérica
+- **Validação preventiva evita estados inválidos**: Verificar valores antes de modificar estado
+- **Métodos devem comunicar falhas**: Retornar `error` permite que o chamador decida como tratar
+- **Múltiplos valores de retorno são comuns**: `(resultadoDesejado, error)` é um padrão idiomático em Go
+- **Propagação de erros é explícita**: Não há tratamento automático, cada nível decide se trata ou propaga
+- **Testes devem cobrir cenários de erro**: Validar comportamento em situações anormais é tão importante quanto sucesso
+- **Erros específicos facilitam debugging**: Saber exatamente o que falhou acelera correções
+- **Regras de negócio devem ser validadas**: Estoque insuficiente é uma regra de negócio, não um bug
+- **Nomenclatura clara previne erros**: `DiminuirQuantidade` é mais claro que `DiminiurQuantidade`
+
 ---
 
 ## 📄 Licença
@@ -312,4 +352,4 @@ Este é um projeto educacional de código aberto para fins de aprendizado.
 ---
 
 **Última atualização:** Fevereiro 2026  
-**Versão atual:** 4.0 - Testes Unitários e Qualidade de Código
+**Versão atual:** 5.0 - Tratamento de Erros e Validação de Negócio
