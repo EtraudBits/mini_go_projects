@@ -16,6 +16,7 @@ func main() {
 	coluna := estoque.NovoProduto("coluna", 10)
 	estacaTipoMourao := estoque.NovoProduto("estaca tipo mourao", 100)
 	estacaCurvada := estoque.NovoProduto("estaca curvada", 15)
+	cobogoFlor := estoque.NovoProduto("cobogo flor", 55)
 
 	//
 	viga.AumentarQuantidade(6) // Aumenta a quantidade da viga em 6 (de 11 para 17)
@@ -26,6 +27,7 @@ func main() {
 		servico.CadastrarProduto(coluna)
 		servico.CadastrarProduto(estacaTipoMourao)
 		servico.CadastrarProduto(estacaCurvada)
+		servico.CadastrarProduto(cobogoFlor)
 
 
 	// Listando os produtos no estoque
