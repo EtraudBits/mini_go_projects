@@ -31,6 +31,9 @@ Este é um projeto educacional desenvolvido para aprender e praticar conceitos f
 - ✅ **Mocking e Test Doubles**
 - ✅ **Tratamento de Erros**
 - ✅ **Validação de Regras de Negócio**
+- ✅ **Persistência em JSON**
+- ✅ **Geração Automática de IDs**
+- ✅ **Padrão Factory**
 
 ---
 
@@ -41,9 +44,10 @@ controleEstoque/
 ├── go.mod                 # Gerenciamento de módulo
 ├── main.go               # Ponto de entrada da aplicação
 ├── estoque/              # Pacote de lógica de negócio
-│   ├── produto.go        # Estrutura e métodos de Produto
+│   ├── produto.go        # Estrutura e métodos de Produto + geração de ID
 │   ├── interface.go      # Interface RepositorioEstoque (contrato)
 │   ├── memoria.go        # Implementação em memória do repositório
+│   ├── arquivo.go        # Implementação com persistência em JSON
 │   ├── servico.go        # Camada de serviço (lógica de negócio)
 │   └── servico_test.go   # Testes unitários do serviço
 └── README.md            # Este arquivo
@@ -140,6 +144,33 @@ controleEstoque/
   - Corrigido typo: `DiminiurQuantidade` → `DiminuirQuantidade`
   - Código mais robusto e previsível
   - Melhor experiência para quem usa a API
+
+### **Versão 6.0 - Persistência em Arquivo e Geração de IDs**
+
+- ✅ **Implementação do `RepositorioArquivo`**:
+  - Nova implementação da interface `RepositorioEstoque`
+  - Persistência de dados em arquivo JSON
+  - Métodos `Listar()`, `Adicionar()` e `Atualizar()`
+  - Leitura e escrita automática no arquivo
+  - Tratamento de arquivo inexistente (estoque vazio)
+  - Uso de `json.Marshal` e `json.Unmarshal` para serialização
+- ✅ **Sistema de Geração de IDs**:
+  - Função `NovoProduto()` com padrão Factory
+  - Geração automática de IDs únicos usando timestamp (nanossegundos)
+  - Campo `ID` adicionado à estrutura `Produto`
+  - IDs baseados em `time.Now().UnixNano()` garantem unicidade
+- ✅ **Refatoração do Produto**:
+  - Adicionado campo `ID string` à struct `Produto`
+  - Função `gerarID()` privada para criação de identificadores
+  - `NovoProduto(nome, quantidade)` substitui criação manual de produtos
+- ✅ **Atualização do Fluxo Principal**:
+  - `main.go` usa `NovoProduto()` para criação de produtos
+  - Integração com `ServicoEstoque` usando `RepositorioArquivo`
+  - Demonstração de persistência em arquivo JSON
+- ✅ **Correções de Nomenclatura**:
+  - `EstoqueMemoria` renomeado para `RepositorioMemoria`
+  - `NovoEstoqueMemoria()` renomeado para `NovoRepositorioMemoria()`
+  - Consistência de nomes entre repositórios (Memória e Arquivo)
 
 ---
 
@@ -343,6 +374,19 @@ Este projeto serve como documentação viva do processo de aprendizado em Go. Ca
 - **Regras de negócio devem ser validadas**: Estoque insuficiente é uma regra de negócio, não um bug
 - **Nomenclatura clara previne erros**: `DiminuirQuantidade` é mais claro que `DiminiurQuantidade`
 
+**Principais Lições da Versão 6.0:**
+
+- **Múltiplas implementações de uma interface**: `RepositorioMemoria` e `RepositorioArquivo` implementam o mesmo contrato
+- **Persistência em JSON é simples em Go**: Pacote `encoding/json` fornece `Marshal` e `Unmarshal`
+- **Factory Functions padronizam criação**: `NovoProduto()` garante que produtos sempre tenham IDs válidos
+- **Timestamps são úteis para IDs únicos**: `time.Now().UnixNano()` gera identificadores únicos sem conflitos
+- **Interfaces permitem trocar implementações facilmente**: Mudar de memória para arquivo não requer alteração no serviço
+- **Leitura e escrita de arquivos é direta**: `os.ReadFile` e `os.WriteFile` simplificam operações com arquivos
+- **Tratamento de arquivo inexistente**: Retornar slice vazio quando arquivo não existe evita erros na primeira execução
+- **Indentação melhora legibilidade do JSON**: `json.MarshalIndent` cria arquivos JSON formatados e fáceis de ler
+- **Consistência de nomenclatura é importante**: Renomear para `RepositorioMemoria` mantém padrão com `RepositorioArquivo`
+- **Padrão Factory encapsula complexidade**: Cliente não precisa saber como ID é gerado, apenas chama `NovoProduto()`
+
 ---
 
 ## 📄 Licença
@@ -352,4 +396,4 @@ Este é um projeto educacional de código aberto para fins de aprendizado.
 ---
 
 **Última atualização:** Fevereiro 2026  
-**Versão atual:** 5.0 - Tratamento de Erros e Validação de Negócio
+**Versão atual:** 6.0 - Persistência em Arquivo e Geração de IDs
