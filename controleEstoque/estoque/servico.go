@@ -28,11 +28,11 @@ func (s *ServicoEstoque) ListarEstoque() []Produto {
 }
 
 // VenderProduto diminui a quantidade de um produto no estoque
-func (s *ServicoEstoque) VenderProduto(nome string, quantidade int) error {
+func (s *ServicoEstoque) VenderProduto(id string, quantidade int) error {
 	produtos := s.repositorio.Listar() // obtém a lista de produtos do repositório
 
 	for i := range produtos {  // faz um loop pelos os produtos
-		if produtos[i].Nome == nome { // se o nome do produto for igual ao nome passado como argumento
+		if produtos[i].ID == id { // se o nome do produto for igual ao nome passado como argumento
 			return produtos[i].DiminuirQuantidade(quantidade) // retorna o resultado da chamada do método DiminuirQuantidade do produto, onde podutos[i] significa o produto encontrado no estoque .DiminuirQuantidade(quantidade) vem do arquivo produto.go
 		}
 	}
