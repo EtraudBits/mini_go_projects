@@ -1,21 +1,26 @@
 package estoque
 
 import (
-	"errors"
-	"fmt"
-	"time"
+	"crypto/sha256" // pacote para gerar hash SHA256
+	"encoding/hex"  // pacote para codificar em hexadecimal
+	"errors"        // pacote para manipulação de erros
+	"fmt"           // pacote para formatação de strings
 )
 
 func NovoProduto(nome string, quantidade int) Produto {
 	return Produto {
-		ID: gerarID(),
+		ID: gerarID(nome),
 		Nome: nome,
 		Quantidade: quantidade,
 	}
 }
 
-func gerarID() string {
-	return fmt.Sprintf("%d", time.Now().UnixNano()) // significa que o ID é gerado com base no timestamp atual em nanossegundos (UnixNano é como um carimbo de tempo em nanossegundos, extremamente improvável de repetir)
+func gerarID(nome string) string {
+	// Gera um hash SHA256 do nome do produto
+	hash := sha256.Sum256([]byte(nome))
+	// Retorna os primeiros 16 caracteres do hash em hexadecimal
+	// Mesmo nome sempre gerará o mesmo ID
+	return hex.EncodeToString(hash[:])[:16]
 }
 
 // Erro para indicar que o estoque é insuficiente
