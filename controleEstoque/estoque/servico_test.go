@@ -19,6 +19,17 @@ func (m *mockRepositorioEstoque) Listar() []Produto { // usa o tipo Produto do a
 	return m.produtos
 }
 
+// Atualizar implementa o método da interface RepositorioEstoque do arquivo interface.go
+func (m *mockRepositorioEstoque) Atualizar(produto Produto) error {
+	for i := range m.produtos {
+		if m.produtos[i].ID == produto.ID {
+			m.produtos[i] = produto
+			return nil
+		}
+	}
+	return nil // para testes simples, retorna nil se não encontrar
+}
+
 func TestCadastrarProduto( t *testing.T) { // t *testing.T vem do pacote padrão "testing"
 
 	// cria o mock do repositório para os testes
@@ -27,11 +38,8 @@ func TestCadastrarProduto( t *testing.T) { // t *testing.T vem do pacote padrão
 	// NovoServicoEstoque vem do arquivo servico.go
 	servico := NovoServicoEstoque(mockRepo)
 
-	// Produto vem do arquivo produto.go
-	produto := Produto {
-		Nome: "viga",
-		Quantidade: 12,
-	}
+	// NovoProduto vem do arquivo produto.go
+	produto := NovoProduto("viga", 12)
 
 	// CadastrarProduto vem do arquivo servico.go
 	servico.CadastrarProduto(produto)
@@ -50,8 +58,8 @@ func TestListarEstoque(t *testing.T) { // t *testing.T vem do pacote padrão "te
 	servico := NovoServicoEstoque(mockRepo) // NovoServicoEstoque vem do arquivo servico.go
 
 	// adiciona alguns produtos ao mock diretamente usando o método Adicionar (linha 12 deste arquivo)
-	mockRepo.Adicionar(Produto{Nome: "tijolo", Quantidade: 50}) // Produto vem do arquivo produto.go
-	mockRepo.Adicionar(Produto{Nome: "cimento", Quantidade: 30}) // Produto vem do arquivo produto.go
+	mockRepo.Adicionar(NovoProduto("tijolo", 50)) // NovoProduto vem do arquivo produto.go
+	mockRepo.Adicionar(NovoProduto("cimento", 30)) // NovoProduto vem do arquivo produto.go
 
 	// ListarEstoque vem do arquivo servico.go
 	produtos := servico.ListarEstoque()
@@ -66,7 +74,7 @@ func TestVenderProdutoComEstoqueInsuficiente(t *testing.T) {
 	mockRepo := &mockRepositorioEstoque{}
 	servico := NovoServicoEstoque(mockRepo)
 
-	mockRepo.Adicionar(Produto{Nome: "areia", Quantidade: 5})
+	mockRepo.Adicionar(NovoProduto("areia", 5))
 
 	err := servico.VenderProduto("areia", 10) // VenderProduto vem do arquivo servico.go
 
