@@ -3,7 +3,20 @@ package estoque
 import (
 	"errors"
 	"fmt"
+	"time"
 )
+
+func NovoProduto(nome string, quantidade int) Produto {
+	return Produto {
+		ID: gerarID(),
+		Nome: nome,
+		Quantidade: quantidade,
+	}
+}
+
+func gerarID() string {
+	return fmt.Sprintf("%d", time.Now().UnixNano()) // significa que o ID é gerado com base no timestamp atual em nanossegundos (UnixNano é como um carimbo de tempo em nanossegundos, extremamente improvável de repetir)
+}
 
 // Erro para indicar que o estoque é insuficiente
 var ErrEstoqueInsuficiente = errors.New("estoque insuficiente")
@@ -13,6 +26,7 @@ var ErrValorInvalido = errors.New("valor inválido")
 
 type Produto struct {
 
+	ID string
 	Nome string
 	Quantidade int
 
