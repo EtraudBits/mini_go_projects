@@ -172,6 +172,25 @@ controleEstoque/
   - `NovoEstoqueMemoria()` renomeado para `NovoRepositorioMemoria()`
   - Consistência de nomes entre repositórios (Memória e Arquivo)
 
+### **Versão 6.1 - IDs Determinísticos e Prevenção de Duplicatas**
+
+- ✅ **Refatoração da Geração de IDs**:
+  - IDs agora baseados em hash SHA256 do nome do produto
+  - Mesmo nome sempre gera o mesmo ID (determinístico)
+  - Previne duplicatas: produtos com mesmo nome têm mesmo ID
+  - Usa `crypto/sha256` e `encoding/hex` para hash confiável
+  - Retorna 16 caracteres hexadecimais do hash
+- ✅ **Vantagens do Sistema de ID Determinístico**:
+  - Evita cadastro duplicado de produtos
+  - ID permanece consistente entre execuções do programa
+  - Permite busca tanto por nome quanto por ID
+  - Facilita identificação e comparação de produtos
+- ✅ **Atualização dos Testes**:
+  - Testes refatorados para usar `NovoProduto()` consistentemente
+  - Mock atualizado com método `Atualizar()` completo
+  - Implementação total da interface `RepositorioEstoque` no mock
+  - Garantia de que testes seguem as mesmas práticas do código de produção
+
 ---
 
 ## 💻 Como Executar
@@ -387,6 +406,17 @@ Este projeto serve como documentação viva do processo de aprendizado em Go. Ca
 - **Consistência de nomenclatura é importante**: Renomear para `RepositorioMemoria` mantém padrão com `RepositorioArquivo`
 - **Padrão Factory encapsula complexidade**: Cliente não precisa saber como ID é gerado, apenas chama `NovoProduto()`
 
+**Principais Lições da Versão 6.1:**
+
+- **Hash determinístico resolve problema de duplicatas**: Usar hash do nome garante mesmo ID para mesmo produto
+- **SHA256 é confiável para geração de IDs**: Hash criptográfico garante unicidade e consistência
+- **IDs determinísticos facilitam comparação**: Produtos com mesmo nome sempre terão mesmo ID, evitando duplicatas
+- **Conversão hexadecimal torna IDs legíveis**: 16 caracteres hex são suficientes e fáceis de visualizar
+- **Separação de responsabilidades**: `gerarID()` recebe nome como parâmetro em vez de usar timestamp global
+- **Testes devem usar mesmas práticas que código de produção**: Mock deve implementar interface completamente
+- **Atualizar testes junto com código**: Refatorações no código devem refletir nos testes para manter consistência
+- **Hash resolve trade-off entre simplicidade e flexibilidade**: Nome único + ID fixo = solução equilibrada
+
 ---
 
 ## 📄 Licença
@@ -396,4 +426,4 @@ Este é um projeto educacional de código aberto para fins de aprendizado.
 ---
 
 **Última atualização:** Fevereiro 2026  
-**Versão atual:** 6.0 - Persistência em Arquivo e Geração de IDs
+**Versão atual:** 6.1 - IDs Determinísticos e Prevenção de Duplicatas
