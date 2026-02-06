@@ -7,31 +7,19 @@ import (
 // Função principal do programa
 func main() {
 
-	repo := estoque.NovoEstoqueMemoria() // cria um novo repositório de estoque em memória chamando a função NovoEstoqueMemoria do pacote memoria.go
-
-	servico := estoque.NovoServicoEstoque(repo) // cria um novo serviço de estoque chamando a função NovoServicoEstoque do pacote servico.go e passando o repositório criado acima
-		
+	repo := estoque.NovoRepositorioArquivo("estoque.json") // cria um novo repositório de estoque em arquivo chamando a função NovoRepositorioArquivo do pacote arquivo.go, passando o nome do arquivo onde os dados serão armazenados
 	
-		viga := estoque.Produto { // cria um novo produto no pacote estoque no tipo Produto
-			Nome: "viga",
-			Quantidade: 11,
-		}
-		coluna := estoque.Produto{
-			Nome: "coluna",
-			Quantidade: 10,
-		}
-		estacaTipoMourao := estoque.Produto{
-			Nome: "estaca tipo mourao",
-			Quantidade: 100,
-		}
-		estacaCurvada := estoque.Produto{
-			Nome: "estaca curvada",
-			Quantidade: 15,
-		}
+	servico := estoque.NovoServicoEstoque(repo) // cria um novo serviço de estoque passando o repositório como parâmetro
 
-		//
-		viga.AumentarQuantidade(6) // Aumenta a quantidade da viga em 6
-		coluna.DiminuirQuantidade(2) // Diminui a quantidade da coluna em 2
+	// Criando alguns produtos usando a função NovoProduto
+	viga := estoque.NovoProduto("viga", 11) // cria um novo produto chamando a função NovoProduto
+	coluna := estoque.NovoProduto("coluna", 10)
+	estacaTipoMourao := estoque.NovoProduto("estaca tipo mourao", 100)
+	estacaCurvada := estoque.NovoProduto("estaca curvada", 15)
+
+	//
+	viga.AumentarQuantidade(6) // Aumenta a quantidade da viga em 6 (de 11 para 17)
+	coluna.DiminuirQuantidade(2) // Diminui a quantidade da coluna em 2 (de 10 para 8)
 
 		// Adicionando os produtos ao estoque
 		servico.CadastrarProduto(viga) // Chama o método CadastrarProduto do serviço para adicionar o produto viga
