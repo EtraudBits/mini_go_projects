@@ -191,6 +191,13 @@ controleEstoque/
   - Implementação total da interface `RepositorioEstoque` no mock
   - Garantia de que testes seguem as mesmas práticas do código de produção
 
+### **Versão 7.0 - Concorrência no Repositório em Memória**
+
+- ✅ **Proteção de Estado Compartilhado**:
+  - Adicionado `sync.Mutex` ao `RepositorioMemoria`
+  - `Lock()` e `Unlock()` aplicados em `Adicionar()`, `Atualizar()` e `Listar()`
+  - Evita condições de corrida em acesso concorrente
+
 ---
 
 ## 💻 Como Executar
@@ -417,6 +424,15 @@ Este projeto serve como documentação viva do processo de aprendizado em Go. Ca
 - **Atualizar testes junto com código**: Refatorações no código devem refletir nos testes para manter consistência
 - **Hash resolve trade-off entre simplicidade e flexibilidade**: Nome único + ID fixo = solução equilibrada
 
+**Principais Lições da Versão 7.0:**
+
+- **Concorrência exige proteção de estado**: Acesso simultâneo a slices pode causar race conditions
+- **Mutex garante exclusão mútua**: `sync.Mutex` protege a região crítica
+- **`Lock()`/`Unlock()` devem estar pareados**: `defer` reduz risco de esquecer o unlock
+- **Leitura também precisa de proteção**: `Listar()` trava antes de copiar os dados
+- **Cópia evita modificações externas**: Retornar uma cópia protege a estrutura interna
+- **Mudanças pequenas geram robustez**: Poucas linhas de mutex evitam bugs difíceis de reproduzir
+
 ---
 
 ## 📄 Licença
@@ -426,4 +442,4 @@ Este é um projeto educacional de código aberto para fins de aprendizado.
 ---
 
 **Última atualização:** Fevereiro 2026  
-**Versão atual:** 6.1 - IDs Determinísticos e Prevenção de Duplicatas
+**Versão atual:** 7.0 - Concorrência no Repositório em Memória
